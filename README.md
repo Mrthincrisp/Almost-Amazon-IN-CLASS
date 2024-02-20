@@ -37,7 +37,7 @@ In preparation for next week, complete the following in lab:
   - Add Auth
   - Add the Keys to your `.env` file
   - Upload the sample data to Firebase
-- Test the Firebase Setup
+  - Test the Firebase Setup
   - Start and stop your server
   - Go to the application it should look like this:
  
@@ -55,7 +55,7 @@ In preparation for next week, complete the following in lab:
   - Click on the Log Out Button
 
  
- <img width="400" alt="Logout Button" src="https://user-images.githubusercontent.com/29741570/199130970-21e7de43-b6b4-4f01-aeec-961bccf64841.png">
+ <img width="400" alt="Logout Button" src="http`s://user-images.githubusercontent.com/29741570/199130970-21e7de43-b6b4-4f01-aeec-961bccf64841.png">
   
   - This should bring back the Login Button
 
