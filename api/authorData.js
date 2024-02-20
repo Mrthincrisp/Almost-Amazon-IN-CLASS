@@ -22,7 +22,17 @@ const createAuthor = () => {};
 const getSingleAuthor = () => {};
 
 // FIXME: DELETE AUTHOR
-const deleteSingleAuthor = () => {};
+const deleteSingleAuthor = (firebasekey) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/authors/${firebasekey}.json`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((responce) => responce.json())
+    .then((data) => resolve(data))
+    .catch(reject);
+});
 
 // FIXME: UPDATE AUTHOR
 const updateAuthor = () => {};
