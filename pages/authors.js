@@ -24,9 +24,10 @@ const showAuthors = (array) => {
         <i class="btn btn-success fas fa-eye" id="view-author-btn--${item.firebaseKey}"></i>
         <i class="fas fa-edit btn btn-info" id="update-author--${item.firebaseKey}"></i>
         <i class="btn btn-danger fas fa-trash-alt" id="delete-author-btn--${item.firebaseKey}"></i>
+        ${item.favorite ? '<span class="badge bg-danger"><i class="fa fa-heart" aria-hidden="true"></i></span>' : ''} 
       </div>
     </div>
-    `;
+    `; // line 27 needs work to properly show the fav icon
   });
   renderToDOM('#store', domString);
 };
