@@ -2,17 +2,7 @@ import clearDom from '../utils/clearDom';
 import renderToDOM from '../utils/renderToDom';
 
 const viewBook = (obj) => {
-  // console.warn(obj);
   clearDom();
-  const images = obj.books.map((book) => ({
-    image: book.image,
-    price: book.price,
-    sale: book.sale,
-    title: book.title,
-    firebaseKey: book.firebaseKey
-  }));
-
-  // console.warn(images);
 
   let domString = `
   <div class="mt-5 d-flex flex-wrap">
@@ -21,20 +11,22 @@ const viewBook = (obj) => {
      <h5> by ${obj.first_name} ${obj.last_name}${obj.favorite ? '<span class="badge bg-danger"><i class="fa fa-heart" aria-hidden="true"></i></span>' : ''}</h5>
      Author Email: <a href="mailto:${obj.email}">${obj.email}</a>
      <hr>
+        <i class="btn btn-info" id="update-author--${obj.firebaseKey}"><span class="fas fa-edit"></span></i>
+        <i class="btn btn-danger" id="delete-author-btn--${obj.firebaseKey}"><span class="fas fa-trash-alt"></span></i>
      </div>
      </div>`;
 
-  images.forEach((image) => {
+  obj.books.forEach((item) => {
     domString += `
            <div class="card">
-        <img class="card-img-top" src=${image.image} alt=${image.title} style="height: 400px;">
+        <img class="card-img-top" src=${item.image} alt=${item.title} style="height: 400px;">
         <div class="card-body" style="height: 180px;">
-          <h5 class="card-title">${image.title}</h5>
-            <p class="card-text bold">${image.sale ? `<span class="badge badge-info sale-badge"><i class="fa fa-bell" aria-hidden="true"></i> Sale</span> $${image.price}` : `$${image.price}`}</p>
+          <h5 class="card-title">${item.title}</h5>
+            <p class="card-text bold">${item.sale ? `<span class="badge badge-info sale-badge"><i class="fa fa-bell" aria-hidden="true"></i> Sale</span> $${item.price}` : `$${item.price}`}</p>
             <hr>
-            <i class="btn btn-success fa fa-eye" id="view-book-btn--${image.firebaseKey}"></i>
-            <i id="edit-book-btn--${image.firebaseKey}" class="fa fa-edit btn btn-info"></i>
-            <i id="delete-book-btn--${image.firebaseKey}" class="btn btn-danger <span class="fas fa-trash-alt"></i>
+            <i class="btn btn-success" id="view-book-btn--${item.firebaseKey}"><span class="fas fa-eye"></span></i>
+        <i class="btn btn-info" id="update-book--${item.firebaseKey}"><span class="fas fa-edit"></span></i>
+        <i class="btn btn-danger" id="delete-book-btn--${item.firebaseKey}"><span class="fas fa-trash-alt"></span></i>
         </div>
       </div>`;
   });
