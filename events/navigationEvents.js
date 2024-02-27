@@ -1,20 +1,20 @@
 import { signOut } from '../utils/auth';
-import { getBooks, booksOnSale } from '../api/bookData';
+import { getBooks, booksOnSale, searchStore } from '../api/bookData';
 import { showBooks, emptyBooks } from '../pages/books';
 import { getAuthors, getFavoriteAuthors } from '../api/authorData';
 import { showAuthors, emptyAuthors } from '../pages/authors';
-// import renderToDOM from '../utils/renderToDom';
-// import clearDom from '../utils/clearDom';
+import renderToDOM from '../utils/renderToDom';
+import clearDom from '../utils/clearDom';
 
 // navigation events
-const navigationEvents = () => {
+const navigationEvents = (uid) => {
   // LOGOUT BUTTON
   document.querySelector('#logout-button')
     .addEventListener('click', signOut);
 
   // TODO: BOOKS ON SALE
   document.querySelector('#sale-books').addEventListener('click', () => {
-    booksOnSale().then((response) => {
+    booksOnSale(uid).then((response) => {
       if (response.length > 0) {
         showBooks(response);
       } else {
@@ -25,7 +25,7 @@ const navigationEvents = () => {
 
   // TODO: ALL BOOKS
   document.querySelector('#all-books').addEventListener('click', () => {
-    getBooks().then((response) => {
+    getBooks(uid).then((response) => {
       if (response.length > 0) {
         showBooks(response);
       } else {
@@ -35,7 +35,7 @@ const navigationEvents = () => {
   });
 
   document.querySelector('#favorite-authors').addEventListener('click', () => {
-    getFavoriteAuthors().then((response) => {
+    getFavoriteAuthors(uid).then((response) => {
       if (response.length > 0) {
         showAuthors(response);
       } else {
@@ -49,7 +49,7 @@ const navigationEvents = () => {
   // 2. Convert the response to an array because that is what the makeAuthors function is expecting
   // 3. If the array is empty because there are no authors, make sure to use the emptyAuthor function
   document.querySelector('#authors').addEventListener('click', () => {
-    getAuthors().then((response) => {
+    getAuthors(uid).then((response) => {
       if (response.length > 0) {
         showAuthors(response);
       } else {
@@ -59,29 +59,30 @@ const navigationEvents = () => {
   });
 
   // STRETCH: SEARCH
-  // document.querySelector('#search').addEventListener('keyup', (e) => {
-  //   const searchValue = document.querySelector('#search').value.toLowerCase();
-  //   // console.warn(searchValue);
+  document.querySelector('#search').addEventListener('keyup', (e) => {
+    const searchValue = document.querySelector('#search').value.toLowerCase();
+    // console.warn(searchValue);
 
-  //   // WHEN THE USER PRESSES ENTER, MAKE THE API CALL AND CLEAR THE INPUT
-  //   if (e.keyCode === 13) {
-  //     // MAKE A CALL TO THE API TO FILTER ON THE BOOKS
-  //     // IF THE SEARCH DOESN'T RETURN ANYTHING, SHOW THE EMPTY STORE
-  //     // OTHERWISE SHOW THE STORE
-  //     searchStore(searchValue).then(({ books, authors }) => {
-  //       if (books.length > 0) {
-  //         showBooks(books);
-  //       } else if (authors.length > 0) {
-  //         showAuthors(authors);
-  //       } else {
-  //         clearDom();
-  //         const domString = '<h1>No Results</h1>';
-  //         renderToDOM('#store', domString);
-  //       }
-  //     });
-  //     document.querySelector('#search').value = '';
-  //   }
-  // });
+    // WHEN THE USER PRESSES ENTER, MAKE THE API CALL AND CLEAR THE INPUT
+    if (e.keyCode === 13) {
+      // MAKE A CALL TO THE API TO FILTER ON THE BOOKS
+      // IF THE SEARCH DOESN'T RETURN ANYTHING, SHOW THE EMPTY STORE
+      // OTHERWISE SHOW THE STORE
+      searchStore(searchValue, uid).then(({ books, authors }) => {
+        // console.warn(books, authors);
+        if (books.length > 0) {
+          showBooks(books);
+        } else if (authors.length > 0) {
+          showAuthors(authors);
+        } else {
+          clearDom();
+          const domString = '<h1>No Results</h1>';
+          renderToDOM('#store', domString);
+        }
+      });
+      document.querySelector('#search').value = '';
+    }
+  });
 };
 
 export default navigationEvents;
