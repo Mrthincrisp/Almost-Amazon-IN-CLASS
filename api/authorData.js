@@ -3,8 +3,8 @@ import client from '../utils/client';
 const endpoint = client.databaseURL;
 
 // FIXME:  GET ALL AUTHORS
-const getAuthors = () => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/authors.json`, {
+const getAuthors = (uid) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/authors.json?orderBy="uid"&equalTo="${uid}"`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -69,30 +69,11 @@ const updateAuthor = (payload) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const getFavoriteAuthors = async () => {
-  const authors = await getAuthors();
+const getFavoriteAuthors = async (uid) => {
+  const authors = await getAuthors(uid);
   const favorite = await authors.filter((obj) => obj.favorite);
   return favorite;
 };
-
-/* const getFavoriteAuthors = (uid) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/authors.json?orderBy="uid"&equalTo="${uid}"`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data) {
-        const favoriteAuthors = Object.values(data.filter((obj) => obj.favorite));
-        resolve(favoriteAuthors);
-      } else {
-        resolve([]);
-      }
-    })
-    .catch(reject);
-}); */
 
 // TODO: GET A SINGLE AUTHOR'S BOOKS
 const getAuthorBooks = (firebaseKey) => new Promise((resolve, reject) => {
